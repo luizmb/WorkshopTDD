@@ -3,7 +3,7 @@ import XCTest
 
 final class APITests: XCTestCase {
     func testDecodingValidJson() throws {
-        let validJsonData = validJson.data(using: .utf8)!
+        let validJsonData = try XCTUnwrap(validJson.data(using: .utf8))
         do {
             let model = try JSONDecoder().decode([Album].self, from: validJsonData)
             XCTAssertEqual(model, expectedAlbumList)

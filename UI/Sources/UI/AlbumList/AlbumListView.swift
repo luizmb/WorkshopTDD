@@ -12,8 +12,10 @@ public struct AlbumListView: View {
     public var body: some View {
         NavigationView {
             List(viewModel.state.albums) { album in
-                AlbumCell(album: album) { event in
-                    viewModel.send(event: event)
+                NavigationLink(destination: albumDetails(for: album.id)) {
+                    AlbumCell(album: album) { event in
+                        viewModel.send(event: event)
+                    }
                 }
             }
             .navigationBarTitle(Text("Music Browser"))
@@ -21,6 +23,10 @@ public struct AlbumListView: View {
                 viewModel.send(event: .onAppear)
             }
         }
+    }
+
+    public func albumDetails(for albumId: String) -> some View {
+        AlbumDetailsView(viewModel: viewModel.albumDetails(for: albumId))
     }
 }
 

@@ -54,6 +54,21 @@ public class AlbumListViewModel: ObservableObject {
             }
     }
 
+    func albumDetails(for albumId: String) -> AlbumDetailsViewModel {
+        guard let matchedAlbum = state.albums.first(where: { $0.id == albumId }) else {
+            return AlbumDetailsViewModel(state: .empty)
+        }
+
+        return AlbumDetailsViewModel(
+            state: AlbumDetailsViewModel.ViewState(
+                image: matchedAlbum.image,
+                artistName: matchedAlbum.artist,
+                albumName: matchedAlbum.name,
+                tracks: matchedAlbum.tracks
+            )
+        )
+    }
+
     private func onAppearPlaceholderImage(albumId: String) {
         guard let url = state.albums.first(where: { $0.id == albumId })?.imageURL else { return }
         musicService
@@ -73,7 +88,8 @@ public class AlbumListViewModel: ObservableObject {
                                     name: $0.name,
                                     artist: $0.artist,
                                     imageURL: $0.imageURL,
-                                    image: UIImage(data: image)
+                                    image: UIImage(data: image),
+                                    tracks: $0.tracks
                                 )
                             },
                             error: self.state.error
@@ -84,13 +100,16 @@ public class AlbumListViewModel: ObservableObject {
     }
 
     static func albumsViewState(from albums: [Album]) -> [AlbumListViewModel.ViewState.AlbumCellViewState] {
-        albums.map { album in
+        albums.map { (album: Album) -> ViewState.AlbumCellViewState in
             ViewState.AlbumCellViewState(
                 id: album.id,
                 name: album.album,
                 artist: album.artist.name,
                 imageURL: album.cover,
-                image: album.image.flatMap(UIImage.init(data:))
+                image: album.image.flatMap(UIImage.init(data:)),
+                tracks: album.tracks.enumerated().map { index, track in
+                    AlbumDetailsViewModel.TrackRow(trackNumber: "\(index + 1)", trackName: track.trackName)
+                }
             )
         }
     }
@@ -104,6 +123,7 @@ extension AlbumListViewModel {
             let artist: String
             let imageURL: URL
             var image: UIImage?
+            let tracks: [AlbumDetailsViewModel.TrackRow]
         }
 
         let albums: [AlbumCellViewState]

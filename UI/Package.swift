@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "UI",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v14)
     ],
     products: [
         .library(name: "UI", targets: ["UI"])
@@ -17,6 +17,6 @@ let package = Package(
     ],
     targets: [
         .target(name: "UI", dependencies: ["API"]),
-        .testTarget(name: "UITests", dependencies: ["UI", "SnapshotTesting"])
+        .testTarget(name: "SnapshotTests", dependencies: ["UI", "SnapshotTesting"], exclude: ["__Snapshots__", "128x128bb.jpeg"])
     ]
 )
