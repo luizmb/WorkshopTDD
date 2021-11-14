@@ -105,6 +105,69 @@ final class SnapshotTests: XCTestCase {
 
         XCTAssertNotNil(cancellable)
     }
+
+    func testAlbumDetailsViewWithoutImage() {
+        let viewState = AlbumDetailsViewModel.ViewState(
+            image: nil,
+            artistName: "Slipknot",
+            albumName: "We Are Not Your Kind",
+            tracks: [
+                .init(trackNumber: "1", trackName: "Insert Coin"),
+                .init(trackNumber: "2", trackName: "Unsainted"),
+                .init(trackNumber: "3", trackName: "Birth of the Cruel"),
+                .init(trackNumber: "4", trackName: "Death Because of Death"),
+                .init(trackNumber: "5", trackName: "Nero Forte"),
+                .init(trackNumber: "6", trackName: "Critical Darling"),
+                .init(trackNumber: "7", trackName: "A Liar's Funeral"),
+                .init(trackNumber: "8", trackName: "Red Flag"),
+                .init(trackNumber: "9", trackName: "What's Next"),
+                .init(trackNumber: "10", trackName: "Spiders"),
+                .init(trackNumber: "11", trackName: "Orphan"),
+                .init(trackNumber: "12", trackName: "My Pain"),
+                .init(trackNumber: "13", trackName: "Not Long for This World"),
+                .init(trackNumber: "14", trackName: "Solway Firth")
+            ]
+        )
+        let viewModel = AlbumDetailsViewModel(state: viewState)
+        let view = AlbumDetailsView(viewModel: viewModel)
+        let hostedView = UIHostingController(rootView: view)
+
+        assertSnapshot(matching: hostedView, as: .image(on: .iPhoneSe))
+    }
+
+    func testAlbumDetailsViewWithImage() {
+        let viewState = AlbumDetailsViewModel.ViewState(
+            image: UIImage(data: someImage())!,
+            artistName: "Iron Maiden",
+            albumName: "Rock In Rio (Live)",
+            tracks: [
+                .init(trackNumber: "1", trackName: "Intro (Arthur's Farewell) [Live '01]"),
+                .init(trackNumber: "2", trackName: "The Wicker Man (Live '01)"),
+                .init(trackNumber: "3", trackName: "Ghost of the Navigator (Live '01)"),
+                .init(trackNumber: "4", trackName: "Brave New World (Live '01)"),
+                .init(trackNumber: "5", trackName: "Wrathchild (Live '01)"),
+                .init(trackNumber: "6", trackName: "2 Minutes To Midnight (Live '01)"),
+                .init(trackNumber: "7", trackName: "Blood Brothers (Live '01)"),
+                .init(trackNumber: "8", trackName: "Sign of the Cross (Live '01)"),
+                .init(trackNumber: "9", trackName: "The Mercenary (Live '01)"),
+                .init(trackNumber: "10", trackName: "The Trooper (Live '01)"),
+                .init(trackNumber: "11", trackName: "Dream of Mirrors (Live '01)"),
+                .init(trackNumber: "12", trackName: "The Clansman (Live '01)"),
+                .init(trackNumber: "13", trackName: "The Evil That Men Do (Live '01)"),
+                .init(trackNumber: "14", trackName: "Fear of the Dark (Live '01)"),
+                .init(trackNumber: "15", trackName: "Iron Maiden (Live '01)"),
+                .init(trackNumber: "16", trackName: "The Number of the Beast (Live '01)"),
+                .init(trackNumber: "17", trackName: "Hallowed Be Thy Name (Live '01)"),
+                .init(trackNumber: "18", trackName: "Sanctuary (Live '01)"),
+                .init(trackNumber: "19", trackName: "Run To the Hills (Live '01)")
+            ]
+        )
+        let viewModel = AlbumDetailsViewModel(state: viewState)
+        let view = AlbumDetailsView(viewModel: viewModel)
+        let hostedView = UIHostingController(rootView: view)
+
+        assertSnapshot(matching: hostedView, as: .image(on: .iPhoneSe))
+    }
 }
 
 extension World {
